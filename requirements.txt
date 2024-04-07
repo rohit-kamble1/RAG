@@ -6,3 +6,4 @@ PyPDF2
 pypdf
 langchain-google-genai
 pinecone-client
+langchain-pinecone
