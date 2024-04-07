@@ -30,8 +30,8 @@ if st.button("Submit"):
     text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
     texts = text_splitter.split_documents(pages)     
     # Generate embeddings for the pages, insert into Pinecone vector database, and expose the index in a retriever interface
-    Pinecone(api_key=pinecone_api_key)
-    st.write(pinecone_api_key)
+    Pinecone(api_key='e1c3c436-e2c9-4201-990e-9b7962700209')
+    #st.write(pinecone_api_key)
     embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key = "AIzaSyDkEntqJsGZk4LcucJwt_Y09Pc0OmzO1wA")
     db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name)
     retriever = db.as_retriever()
