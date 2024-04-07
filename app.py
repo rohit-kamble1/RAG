@@ -13,6 +13,7 @@ from langchain_pinecone import PineconeVectorStore
 #google_api_key = os.environ.get('GOOGLE_API_KEY')
 google_api_key = "AIzaSyDkEntqJsGZk4LcucJwt_Y09Pc0OmzO1wA"
 pinecone_api_key = "e1c3c436-e2c9-4201-990e-9b7962700209"
+os.environ["PINECONE_API_KEY"] = "e1c3c436-e2c9-4201-990e-9b7962700209"
 #pinecone_api_key = os.environ.get('PINECONE_API_KEY')
 index_name = "testvector"
 # Streamlit app
@@ -37,7 +38,7 @@ if st.button("Submit"):
     client = pinecone.Pinecone(api_key= 'e1c3c436-e2c9-4201-990e-9b7962700209')
     db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name)
     retriever = db.as_retriever()
-
+    
    # create a chain to answer questions 
     qa = RetrievalQA.from_chain_type(
     llm=ChatGoogleGenerativeAI(model="gemini-pro", google_api_key = "AIzaSyDkEntqJsGZk4LcucJwt_Y09Pc0OmzO1wA", temperature=0.5, convert_system_message_to_human=True), chain_type="stuff", retriever=retriever, return_source_documents=True)
