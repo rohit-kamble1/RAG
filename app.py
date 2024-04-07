@@ -10,8 +10,10 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain.chains import RetrievalQA
 from langchain_pinecone import PineconeVectorStore
 
-google_api_key = os.environ.get('GOOGLE_API_KEY')
-pinecone_api_key = os.environ.get('PINECONE_API_KEY')
+#google_api_key = os.environ.get('GOOGLE_API_KEY')
+google_api_key = "AIzaSyDkEntqJsGZk4LcucJwt_Y09Pc0OmzO1wA"
+pinecone_api_key = "e1c3c436-e2c9-4201-990e-9b7962700209"
+#pinecone_api_key = os.environ.get('PINECONE_API_KEY')
 index_name = "testvector"
 # Streamlit app
 st.subheader('Generative Q&A with LangChain')
@@ -29,6 +31,7 @@ if st.button("Submit"):
     texts = text_splitter.split_documents(pages)     
     # Generate embeddings for the pages, insert into Pinecone vector database, and expose the index in a retriever interface
     Pinecone(api_key=pinecone_api_key)
+    st.write(pinecone_api_key)
     embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
     db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name)
     retriever = db.as_retriever()
