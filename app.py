@@ -4,6 +4,7 @@ from langchain.document_loaders import PyPDFLoader
 from langchain.text_splitter import CharacterTextSplitter
 import os, tempfile
 import streamlit as st
+import pinecone
 from pinecone import Pinecone
 from langchain.chains.question_answering import load_qa_chain
 from langchain.chains import RetrievalQA
