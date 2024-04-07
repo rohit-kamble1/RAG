@@ -32,13 +32,13 @@ if st.button("Submit"):
     # Generate embeddings for the pages, insert into Pinecone vector database, and expose the index in a retriever interface
     Pinecone(api_key=pinecone_api_key)
     st.write(pinecone_api_key)
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key = "AIzaSyDkEntqJsGZk4LcucJwt_Y09Pc0OmzO1wA")
     db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name)
     retriever = db.as_retriever()
 
    # create a chain to answer questions 
     qa = RetrievalQA.from_chain_type(
-    llm=ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.5, convert_system_message_to_human=True), chain_type="stuff", retriever=retriever, return_source_documents=True)
+    llm=ChatGoogleGenerativeAI(model="gemini-pro", google_api_key = "AIzaSyDkEntqJsGZk4LcucJwt_Y09Pc0OmzO1wA", temperature=0.5, convert_system_message_to_human=True), chain_type="stuff", retriever=retriever, return_source_documents=True)
     result = qa({"query": query})
     retriever.get_relevant_documents(query)
     
