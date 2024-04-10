@@ -1,9 +1,9 @@
 streamlit
-google-generativeai
+#google-generativeai
 python-dotenv
-langchain
+langchain==0.1.15
 PyPDF2
-langchain-google-genai
+#langchain-google-genai
 pinecone-client
 langchain-pinecone
 huggingface_hub
