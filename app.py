@@ -1,7 +1,6 @@
 # from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_openai import OpenAI
 # from langchain_google_genai import GoogleGenerativeAIEmbeddings
-#from langchain_openai import OpenAIEmbeddings
 from langchain_community.embeddings import HuggingFaceHubEmbeddings
 from langchain_community.llms import HuggingFaceEndpoint
 from langchain_community.document_loaders import PyPDFLoader
@@ -19,7 +18,6 @@ warnings.filterwarnings('ignore')
 #google_api_key = os.environ.get('GOOGLE_API_KEY')
 #pinecone_api_key = os.environ.get('PINECONE_API_KEY')
 pinecone_api_key= "e1c3c436-e2c9-4201-990e-9b7962700209"
-#OpenAI_key = os.environ.get("OPENAI_API_KEY")
 # HUGGINGFACEHUB_API_TOKEN = os.environ.get("HUGGINGFACEHUB_API_TOKEN")
 HUGGINGFACEHUB_API_TOKEN = "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"
 index_name = "testvector"
@@ -42,7 +40,6 @@ if st.button("Submit"):
     
     #st.write(pinecone_api_key)
     # embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
-    #embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
     embeddings = HuggingFaceHubEmbeddings()
     Pinecone(api_key="e1c3c436-e2c9-4201-990e-9b7962700209")
     db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name)
