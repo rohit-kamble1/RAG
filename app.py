@@ -13,10 +13,10 @@ from langchain_pinecone import PineconeVectorStore
 #import getpass
 # os.environ["OPENAI_API_KEY"] = getpass.getpass()
 #google_api_key = os.environ.get('GOOGLE_API_KEY')
-#pinecone_api_key = os.environ.get('PINECONE_API_KEY')
-Pinecone_api_key = "e1c3c436-e2c9-4201-990e-9b7962700209"
+pinecone_api_key = os.environ.get('PINECONE_API_KEY')
+#Pinecone_api_key = "e1c3c436-e2c9-4201-990e-9b7962700209"
 #openai_api_key = os.environ.get("OPENAI_API_KEY")
-#OpenAI_key = os.environ.get("OPENAI_API_KEY")
+OpenAI_key = os.environ.get("OPENAI_API_KEY")
 OpenAI_key = "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"
 index_name = "testvector"
 # Streamlit app
@@ -38,7 +38,7 @@ if st.button("Submit"):
     #st.write(pinecone_api_key)
     # embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
     embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
-    Pinecone(api_key="e1c3c436-e2c9-4201-990e-9b7962700209")
+    Pinecone(api_key=pinecone_api_key)
     db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name)
     retriever = db.as_retriever()
     
