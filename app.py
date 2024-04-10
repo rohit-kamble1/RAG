@@ -1,8 +1,10 @@
 # from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_openai import OpenAI
 # from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from langchain_openai import OpenAIEmbeddings
-from langchain.document_loaders import PyPDFLoader
+#from langchain_openai import OpenAIEmbeddings
+from langchain_community.embeddings import HuggingFaceHubEmbeddings
+from langchain_community.llms import HuggingFaceEndpoint
+from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import CharacterTextSplitter
 import os, tempfile
 import streamlit as st
@@ -10,12 +12,18 @@ from pinecone import Pinecone
 from langchain.chains.question_answering import load_qa_chain
 from langchain.chains import RetrievalQA
 from langchain_pinecone import PineconeVectorStore
-#import getpass
-# os.environ["OPENAI_API_KEY"] = getpass.getpass()
+import warnings 
+# Settings the warnings to be ignored 
+warnings.filterwarnings('ignore')
+
 #google_api_key = os.environ.get('GOOGLE_API_KEY')
-pinecone_api_key = os.environ.get('PINECONE_API_KEY')
-OpenAI_key = os.environ.get("OPENAI_API_KEY")
+#pinecone_api_key = os.environ.get('PINECONE_API_KEY')
+pinecone_api_key= "e1c3c436-e2c9-4201-990e-9b7962700209"
+#OpenAI_key = os.environ.get("OPENAI_API_KEY")
+# HUGGINGFACEHUB_API_TOKEN = os.environ.get("HUGGINGFACEHUB_API_TOKEN")
+HUGGINGFACEHUB_API_TOKEN = "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"
 index_name = "testvector"
+repo_id = "mistralai/Mistral-7B-Instruct-v0.2"
 # Streamlit app
 st.subheader('Generative Q&A with LangChain')
 
@@ -34,8 +42,9 @@ if st.button("Submit"):
     
     #st.write(pinecone_api_key)
     # embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
-    embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
-    Pinecone(api_key=pinecone_api_key)
+    #embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
+    embeddings = HuggingFaceHubEmbeddings()
+    Pinecone(api_key="e1c3c436-e2c9-4201-990e-9b7962700209")
     db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name)
     retriever = db.as_retriever()
     
@@ -44,7 +53,8 @@ if st.button("Submit"):
     # llm=ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.5, convert_system_message_to_human=True), 
     # chain_type="stuff", retriever=retriever, return_source_documents=True)
     qa = RetrievalQA.from_chain_type(
-    llm=OpenAI(model="gpt-3.5-turbo-instruct", temperature=0.5), 
+    llm=HuggingFaceEndpoint(
+    repo_id=repo_id, max_length=128, temperature=0.5, token=HUGGINGFACEHUB_API_TOKEN), 
     chain_type="map_reduce", retriever=retriever, return_source_documents=True)
     result = qa({"query": query})
     st.write(result['result'])
