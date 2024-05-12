@@ -18,7 +18,7 @@ import warnings
 # Settings the warnings to be ignored 
 warnings.filterwarnings('ignore')
 
-pinecone_api_key = os.environ.get('PINECONE_API_KEY')
+#pinecone_api_key = os.environ.get('PINECONE_API_KEY')
 index_name = "testvector"
 
 
@@ -66,7 +66,7 @@ addSelectBox = st.sidebar.selectbox(
         # st.write(result['result'])
 
 if addSelectBox == "Gemini Pro":
-    GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")   
+    #GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")   
     st.header("Generative Q&A with LangChain")
     source_doc = st.file_uploader("Upload source document", type="pdf", label_visibility="visible")
     query = st.text_input("Enter your query")
@@ -78,14 +78,14 @@ if addSelectBox == "Gemini Pro":
         texts = loadFile(source_doc)      
         # Generate embeddings for the pages, insert into Pinecone vector database, and expose the index in a retriever interface
         embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
-        Pinecone(api_key=pinecone_api_key) #initialize pinecone
+        Pinecone(api_key="e1c3c436-e2c9-4201-990e-9b7962700209") #initialize pinecone
         db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name)
         retriever = db.as_retriever()
         
         # create a chain to answer questions 
         qa = RetrievalQA.from_chain_type(
         llm= GoogleGenerativeAI(
-        model="gemini-pro", google_api_key=GOOGLE_API_KEY, temperature=temperature, convert_system_message_to_human=True), 
+        model="gemini-pro", google_api_key="AIzaSyDkEntqJsGZk4LcucJwt_Y09Pc0OmzO1wA", temperature=temperature, convert_system_message_to_human=True), 
         chain_type="map_reduce", retriever=retriever, return_source_documents=True)
         result = qa({"query": query})
         st.write(result['result'])
