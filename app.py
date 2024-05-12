@@ -86,7 +86,7 @@ if addSelectBox == "Gemini Pro":
         qa = RetrievalQA.from_chain_type(
         llm= GoogleGenerativeAI(
         model="gemini-pro", google_api_key=GOOGLE_API_KEY, temperature=temperature, convert_system_message_to_human=True), 
-        chain_type="stuff", retriever=retriever, return_source_documents=True)
+        chain_type="map_reduce", retriever=retriever, return_source_documents=True)
         result = qa({"query": query})
         st.write(result['result'])
 
