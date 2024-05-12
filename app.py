@@ -4,8 +4,8 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_google_genai import GoogleGenerativeAI
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
-from langchain_community.embeddings import HuggingFaceHubEmbeddings
-from langchain_community.llms import HuggingFaceEndpoint
+# from langchain_community.embeddings import HuggingFaceHubEmbeddings
+# from langchain_community.llms import HuggingFaceEndpoint
 
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import CharacterTextSplitter
