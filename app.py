@@ -78,7 +78,7 @@ if addSelectBox == "Gemini Pro":
         texts = loadFile(source_doc)      
         # Generate embeddings for the pages, insert into Pinecone vector database, and expose the index in a retriever interface
         embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key = 'AIzaSyDkEntqJsGZk4LcucJwt_Y09Pc0OmzO1wA')
-        Pinecone(PINECONE_API_KEY="e1c3c436-e2c9-4201-990e-9b7962700209") #initialize pinecone
+        Pinecone(api_key="e1c3c436-e2c9-4201-990e-9b7962700209") #initialize pinecone
         db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name)
         retriever = db.as_retriever()
         
