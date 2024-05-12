@@ -58,12 +58,12 @@ addSelectBox = st.sidebar.selectbox(
 #         retriever = db.as_retriever()
         
     # create a chain to answer questions 
-        qa = RetrievalQA.from_chain_type(
-        llm=HuggingFaceEndpoint(
-        repo_id=repo_id, max_length=128, temperature=temperature, token=HUGGINGFACEHUB_API_TOKEN), 
-        chain_type="map_reduce", retriever=retriever, return_source_documents=True)
-        result = qa({"query": query})
-        st.write(result['result'])
+        # qa = RetrievalQA.from_chain_type(
+        # llm=HuggingFaceEndpoint(
+        # repo_id=repo_id, max_length=128, temperature=temperature, token=HUGGINGFACEHUB_API_TOKEN), 
+        # chain_type="map_reduce", retriever=retriever, return_source_documents=True)
+        # result = qa({"query": query})
+        # st.write(result['result'])
 
 if addSelectBox == "Gemini Pro":
     GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")   
