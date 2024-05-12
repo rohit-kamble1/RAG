@@ -6,5 +6,5 @@ PyPDF2
 langchain-google-genai
 pinecone-client
 langchain-pinecone
-huggingface_hub
-sentence-transformers
+#huggingface_hub
+#sentence-transformers
