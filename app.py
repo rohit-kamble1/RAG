@@ -77,15 +77,15 @@ if addSelectBox == "Gemini Pro":
     if st.button("Submit"):
         texts = loadFile(source_doc)      
         # Generate embeddings for the pages, insert into Pinecone vector database, and expose the index in a retriever interface
-        embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key = 'e1c3c436-e2c9-4201-990e-9b7962700209')
-        client = Pinecone(api_key="e1c3c436-e2c9-4201-990e-9b7962700209") #initialize pinecone
-        db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name, client = client)
+        embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key = 'AIzaSyDkEntqJsGZk4LcucJwt_Y09Pc0OmzO1wA')
+        Pinecone(PINECONE_API_KEY="e1c3c436-e2c9-4201-990e-9b7962700209") #initialize pinecone
+        db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name)
         retriever = db.as_retriever()
         
         # create a chain to answer questions 
         qa = RetrievalQA.from_chain_type(
         llm= GoogleGenerativeAI(
-        model="gemini-pro", google_api_key="AIzaSyDkEntqJsGZk4LcucJwt_Y09Pc0OmzO1wA", temperature=temperature, convert_system_message_to_human=True), 
+        model="gemini-pro", GOOGLE_API_KEY="AIzaSyDkEntqJsGZk4LcucJwt_Y09Pc0OmzO1wA", temperature=temperature, convert_system_message_to_human=True), 
         chain_type="map_reduce", retriever=retriever, return_source_documents=True)
         result = qa({"query": query})
         st.write(result['result'])
