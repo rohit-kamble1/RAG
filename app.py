@@ -37,24 +37,25 @@ addSelectBox = st.sidebar.selectbox(
     ("Mistral AI", "Gemini Pro", "OpenAI")
 )
 
-if addSelectBox == "Mistral AI":
-    HUGGINGFACEHUB_API_TOKEN = os.environ.get("HUGGINGFACEHUB_API_TOKEN")
-    repo_id = "mistralai/Mistral-7B-Instruct-v0.2"
-    # Streamlit app
-    st.subheader('Generative Q&A with LangChain')
-    source_doc = st.file_uploader("Upload source document", type="pdf", label_visibility="collapsed")
+# if addSelectBox == "Mistral AI":
+#     HUGGINGFACEHUB_API_TOKEN = os.environ.get("HUGGINGFACEHUB_API_TOKEN")
+#     repo_id = "mistralai/Mistral-7B-Instruct-v0.2"
+#     #repo_id = "meta-llama/Meta-Llama-3-8B"
+#     # Streamlit app
+#     st.subheader('Generative Q&A with LangChain')
+#     source_doc = st.file_uploader("Upload source document", type="pdf", label_visibility="collapsed")
 
-    query = st.text_input("Enter your query")
-    with st.sidebar:
-        temperature = st.number_input("Define value of temperature which controls the randomness of model output:",
-                                  min_value=0.0, max_value=2.0, step= 0.1)
-    if st.button("Submit"):
-        texts = loadFile(source_doc)  
-        # Generate embeddings for the pages, insert into Pinecone vector database, and expose the index in a retriever interface
-        embeddings = HuggingFaceHubEmbeddings()
-        Pinecone(api_key=pinecone_api_key)    #initialize pinecone
-        db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name)
-        retriever = db.as_retriever()
+#     query = st.text_input("Enter your query")
+#     with st.sidebar:
+#         temperature = st.number_input("Define value of temperature which controls the randomness of model output:",
+#                                   min_value=0.0, max_value=2.0, step= 0.1)
+#     if st.button("Submit"):
+#         texts = loadFile(source_doc)  
+#         # Generate embeddings for the pages, insert into Pinecone vector database, and expose the index in a retriever interface
+#         embeddings = HuggingFaceHubEmbeddings()
+#         Pinecone(api_key=pinecone_api_key)    #initialize pinecone
+#         db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name)
+#         retriever = db.as_retriever()
         
     # create a chain to answer questions 
         qa = RetrievalQA.from_chain_type(
