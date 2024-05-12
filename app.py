@@ -91,6 +91,7 @@ if addSelectBox == "Gemini Pro":
         st.write(result['result'])
 
 # if addSelectBox == "OpenAI":
+#
 #     OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 #     st.header("Generative Q&A with LangChain")
 #     query = st.text_input("Enter your query.")
