@@ -15,11 +15,25 @@ from pinecone import Pinecone
 from langchain.chains import RetrievalQA
 from langchain_pinecone import PineconeVectorStore
 import warnings 
+import boto3
 # Settings the warnings to be ignored 
 warnings.filterwarnings('ignore')
+# Replace with your secret name
+secret_name = "pinecone_api_key"
+region_name = "ap-south-1"
 
-pinecone_api_key = os.environ.get('PINECONE_API_KEY')
-google_api_key = os.environ.get('GOOGLE_API_KEY')
+try:
+     pinecone_api_key = os.environ.get('PINECONE_API_KEY')
+except:
+     pass
+else:
+     
+     session = boto3.Session()
+     client = session.client(service_name='secretsmanager')  
+     pinecone_api_key = client.get_secret_value(SecretId=secret_name)
+     
+     
+#google_api_key = os.environ.get('GOOGLE_API_KEY')
 index_name = "testvector"
 
 def loadFile(source_doc):
@@ -78,14 +92,14 @@ if addSelectBox == "Gemini Pro":
         texts = loadFile(source_doc)      
         # Generate embeddings for the pages, insert into Pinecone vector database, and expose the index in a retriever interface
         embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
-        pc = Pinecone(api_key) #initialize pinecone
+        Pinecone(pinecone_api_key) #initialize pinecone
         db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name)
         retriever = db.as_retriever()
         
         # create a chain to answer questions 
         qa = RetrievalQA.from_chain_type(
         llm= GoogleGenerativeAI(
-        model="gemini-pro", GOOGLE_API_KEY=google_api_key, temperature=temperature, convert_system_message_to_human=True), 
+        model="gemini-pro", GOOGLE_API_KEY="AIzaSyDkEntqJsGZk4LcucJwt_Y09Pc0OmzO1wA", temperature=temperature, convert_system_message_to_human=True), 
         chain_type="map_reduce", retriever=retriever, return_source_documents=True)
         result = qa({"query": query})
         st.write(result['result'])
