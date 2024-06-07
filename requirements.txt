@@ -7,5 +7,6 @@ langchain-google-genai
 pinecone-client
 langchain-pinecone
 pypdf
+boto3
 #huggingface_hub
 #sentence-transformers
