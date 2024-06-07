@@ -27,10 +27,12 @@ try:
 except:
      pass
 else:
-     
+     secret_name = "pinecone_api_key"
+     region_name = "ap-south-1"
      session = boto3.Session()
      client = session.client(service_name='secretsmanager')  
-     pinecone_api_key = client.get_secret_value(SecretId=secret_name)
+     get_secret_value_response  = client.get_secret_value(SecretId=secret_name)
+     pinecone_api_key = get_secret_value_response['SecretString']
      
      
 #google_api_key = os.environ.get('GOOGLE_API_KEY')
