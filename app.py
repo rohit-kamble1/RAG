@@ -16,24 +16,37 @@ from langchain.chains import RetrievalQA
 from langchain_pinecone import PineconeVectorStore
 import warnings 
 import boto3
+from botocore.exceptions import ClientError
 # Settings the warnings to be ignored 
 warnings.filterwarnings('ignore')
-# Replace with your secret name
-secret_name = "pinecone_api_key"
-region_name = "ap-south-1"
+
 
 try:
      pinecone_api_key = os.environ.get('PINECONE_API_KEY')
 except:
      pass
-else:
-     secret_name = "pinecone_api_key"
-     region_name = "ap-south-1"
-     session = boto3.Session()
-     client = session.client(service_name='secretsmanager')  
-     get_secret_value_response  = client.get_secret_value(SecretId=secret_name)
-     pinecone_api_key = get_secret_value_response['SecretString']
-     
+
+secret_name = "pinecone_api_key"
+region_name = "ap-south-1"
+
+# Create a Secrets Manager client
+session = boto3.session.Session()
+client = session.client(
+    service_name='secretsmanager',
+    region_name="ap-south-1"
+    )
+
+try:
+    get_secret_value_response = client.get_secret_value(
+        SecretId=secret_name
+    )
+except ClientError as e:
+    # For a list of exceptions thrown, see
+    # https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+    raise e
+
+pinecone_api_key = get_secret_value_response['SecretString']
+  
      
 #google_api_key = os.environ.get('GOOGLE_API_KEY')
 index_name = "testvector"
