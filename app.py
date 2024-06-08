@@ -46,7 +46,7 @@ except ClientError as e:
     raise e
 
 pinecone_api_key = get_secret_value_response['SecretString']
-pinecone_api_key = pinecone_api_key['pinecone_api_keys']
+pinecone_api_key = pinecone_api_key.get("pinecone_api_keys", None)
 st.write(pinecone_api_key)  
      
 #google_api_key = os.environ.get('GOOGLE_API_KEY')
