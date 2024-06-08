@@ -49,10 +49,11 @@ api_key = get_secret_value_response['SecretString']
 
 #pinecone_api_key = pinecone_api_key.get("pinecone_api_keys", None)
 
-st.write(get_secret_value_response['SecretString'])  
+st.write(get_secret_value_response['SecretString'][0])  
 
 api_key = api_key.split(':')
 api_key = api_key[1].strip('"')
+api_key = api_key.rstrip('"}')
 st.write(api_key)
 #google_api_key = os.environ.get('GOOGLE_API_KEY')
 index_name = "testvector"
