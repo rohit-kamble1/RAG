@@ -20,41 +20,41 @@ from botocore.exceptions import ClientError
 # Settings the warnings to be ignored 
 warnings.filterwarnings('ignore')
 
+pinecone_api_key = os.environ.get('PINECONE_API_KEY')
+# try:
+#      pinecone_api_key = os.environ.get('PINECONE_API_KEY')
+# except:
+#      pass
 
-try:
-     pinecone_api_key = os.environ.get('PINECONE_API_KEY')
-except:
-     pass
+# secret_name = "pinecone_api_keys"
+# region_name = "ap-south-1"
 
-secret_name = "pinecone_api_keys"
-region_name = "ap-south-1"
+# # Create a Secrets Manager client
+# session = boto3.session.Session()
+# client = session.client(
+#     service_name='secretsmanager',
+#     region_name="ap-south-1"
+#     )
 
-# Create a Secrets Manager client
-session = boto3.session.Session()
-client = session.client(
-    service_name='secretsmanager',
-    region_name="ap-south-1"
-    )
+# try:
+#     get_secret_value_response = client.get_secret_value(
+#         SecretId=secret_name
+#     )
+# except ClientError as e:
+#     # For a list of exceptions thrown, see
+#     # https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+#     raise e
 
-try:
-    get_secret_value_response = client.get_secret_value(
-        SecretId=secret_name
-    )
-except ClientError as e:
-    # For a list of exceptions thrown, see
-    # https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
-    raise e
+# api_key = get_secret_value_response['SecretString']
 
-api_key = get_secret_value_response['SecretString']
+# #pinecone_api_key = pinecone_api_key.get("pinecone_api_keys", None)
 
-#pinecone_api_key = pinecone_api_key.get("pinecone_api_keys", None)
+# st.write(get_secret_value_response['SecretString'][0])  
 
-st.write(get_secret_value_response['SecretString'][0])  
-
-api_key = api_key.split(':')
-api_key = api_key[1].strip('"')
-api_key = api_key.rstrip('"}')
-st.write(api_key)
+# api_key = api_key.split(':')
+# api_key = api_key[1].strip('"')
+# api_key = api_key.rstrip('"}')
+# st.write(api_key)
 #google_api_key = os.environ.get('GOOGLE_API_KEY')
 index_name = "testvector"
 
@@ -115,7 +115,7 @@ if addSelectBox == "Gemini Pro":
         # Generate embeddings for the pages, insert into Pinecone vector database, and expose the index in a retriever interface
         embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key = 'AIzaSyDkEntqJsGZk4LcucJwt_Y09Pc0OmzO1wA')
         st.write('Hey')
-        Pinecone(api_key) #initialize pinecone
+        pc = Pinecone(api_key = 'e1c3c436-e2c9-4201-990e-9b7962700209') #initialize pinecone
         st.write('initialize pinecone')
         db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name)
         retriever = db.as_retriever()
