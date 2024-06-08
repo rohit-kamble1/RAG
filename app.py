@@ -26,8 +26,7 @@ try:
 except:
      pass
 
-
-secret_name = "pinecone_api_key"
+secret_name = "pinecone_api_keys"
 region_name = "ap-south-1"
 
 # Create a Secrets Manager client
