@@ -45,11 +45,11 @@ except ClientError as e:
     # https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
     raise e
 
-pinecone_api_key = get_secret_value_response['SecretString']
-type(pinecone_api_key)
+api_key = get_secret_value_response['SecretString']
+st.write(type(api_key))
 #pinecone_api_key = pinecone_api_key.get("pinecone_api_keys", None)
 
-st.write(pinecone_api_key)  
+st.write(api_key)  
      
 #google_api_key = os.environ.get('GOOGLE_API_KEY')
 index_name = "testvector"
@@ -111,7 +111,7 @@ if addSelectBox == "Gemini Pro":
         # Generate embeddings for the pages, insert into Pinecone vector database, and expose the index in a retriever interface
         embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key = 'AIzaSyDkEntqJsGZk4LcucJwt_Y09Pc0OmzO1wA')
         st.write('Hey')
-        Pinecone(pinecone_api_key) #initialize pinecone
+        Pinecone(api_key) #initialize pinecone
         st.write('initialize pinecone')
         db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name)
         retriever = db.as_retriever()
