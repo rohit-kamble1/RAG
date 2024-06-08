@@ -26,6 +26,7 @@ try:
 except:
      pass
 
+
 secret_name = "pinecone_api_key"
 region_name = "ap-south-1"
 
