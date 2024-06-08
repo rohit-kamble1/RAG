@@ -46,6 +46,7 @@ except ClientError as e:
     raise e
 
 api_key = get_secret_value_response['SecretString']
+
 st.write(type(api_key))
 #pinecone_api_key = pinecone_api_key.get("pinecone_api_keys", None)
 
