@@ -1,11 +1,11 @@
-# from langchain_openai import OpenAI
-# from langchain_openai import OpenAIEmbeddings
+from langchain_openai import OpenAI
+from langchain_openai import OpenAIEmbeddings
 
 from langchain_google_genai import GoogleGenerativeAI
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
-# from langchain_community.embeddings import HuggingFaceHubEmbeddings
-# from langchain_community.llms import HuggingFaceEndpoint
+from langchain_community.embeddings import HuggingFaceHubEmbeddings
+from langchain_community.llms import HuggingFaceEndpoint
 
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import CharacterTextSplitter
@@ -15,47 +15,12 @@ from pinecone import Pinecone
 from langchain.chains import RetrievalQA
 from langchain_pinecone import PineconeVectorStore
 import warnings 
-import boto3
-from botocore.exceptions import ClientError
+
 # Settings the warnings to be ignored 
 warnings.filterwarnings('ignore')
 
 pinecone_api_key = os.environ.get('PINECONE_API_KEY')
-# try:
-#      pinecone_api_key = os.environ.get('PINECONE_API_KEY')
-# except:
-#      pass
 
-# secret_name = "pinecone_api_keys"
-# region_name = "ap-south-1"
-
-# # Create a Secrets Manager client
-# session = boto3.session.Session()
-# client = session.client(
-#     service_name='secretsmanager',
-#     region_name="ap-south-1"
-#     )
-
-# try:
-#     get_secret_value_response = client.get_secret_value(
-#         SecretId=secret_name
-#     )
-# except ClientError as e:
-#     # For a list of exceptions thrown, see
-#     # https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
-#     raise e
-
-# api_key = get_secret_value_response['SecretString']
-
-# #pinecone_api_key = pinecone_api_key.get("pinecone_api_keys", None)
-
-# st.write(get_secret_value_response['SecretString'][0])  
-
-# api_key = api_key.split(':')
-# api_key = api_key[1].strip('"')
-# api_key = api_key.rstrip('"}')
-# st.write(api_key)
-#google_api_key = os.environ.get('GOOGLE_API_KEY')
 index_name = "testvector"
 
 def loadFile(source_doc):
@@ -73,36 +38,36 @@ addSelectBox = st.sidebar.selectbox(
     ("Mistral AI", "Gemini Pro", "OpenAI")
 )
 
-# if addSelectBox == "Mistral AI":
-#     HUGGINGFACEHUB_API_TOKEN = os.environ.get("HUGGINGFACEHUB_API_TOKEN")
-#     repo_id = "mistralai/Mistral-7B-Instruct-v0.2"
-#     #repo_id = "meta-llama/Meta-Llama-3-8B"
-#     # Streamlit app
-#     st.subheader('Generative Q&A with LangChain')
-#     source_doc = st.file_uploader("Upload source document", type="pdf", label_visibility="collapsed")
+if addSelectBox == "Mistral AI":
+    HUGGINGFACEHUB_API_TOKEN = os.environ.get("HUGGINGFACEHUB_API_TOKEN")
+    repo_id = "mistralai/Mistral-7B-Instruct-v0.2"
+    repo_id = "meta-llama/Meta-Llama-3-8B"
+    # Streamlit app
+    st.subheader('Generative Q&A with LangChain')
+    source_doc = st.file_uploader("Upload source document", type="pdf", label_visibility="collapsed")
 
-#     query = st.text_input("Enter your query")
-#     with st.sidebar:
-#         temperature = st.number_input("Define value of temperature which controls the randomness of model output:",
-#                                   min_value=0.0, max_value=2.0, step= 0.1)
-#     if st.button("Submit"):
-#         texts = loadFile(source_doc)  
-#         # Generate embeddings for the pages, insert into Pinecone vector database, and expose the index in a retriever interface
-#         embeddings = HuggingFaceHubEmbeddings()
-#         Pinecone(api_key=pinecone_api_key)    #initialize pinecone
-#         db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name)
-#         retriever = db.as_retriever()
+    query = st.text_input("Enter your query")
+    with st.sidebar:
+        temperature = st.number_input("Define value of temperature which controls the randomness of model output:",
+                                  min_value=0.0, max_value=2.0, step= 0.1)
+    if st.button("Submit"):
+        texts = loadFile(source_doc)  
+        # Generate embeddings for the pages, insert into Pinecone vector database, and expose the index in a retriever interface
+        embeddings = HuggingFaceHubEmbeddings()
+        Pinecone(api_key = pinecone_api_key)    #initialize pinecone
+        db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name)
+        retriever = db.as_retriever()
         
     # create a chain to answer questions 
-        # qa = RetrievalQA.from_chain_type(
-        # llm=HuggingFaceEndpoint(
-        # repo_id=repo_id, max_length=128, temperature=temperature, token=HUGGINGFACEHUB_API_TOKEN), 
-        # chain_type="map_reduce", retriever=retriever, return_source_documents=True)
-        # result = qa({"query": query})
-        # st.write(result['result'])
+        qa = RetrievalQA.from_chain_type(
+        llm=HuggingFaceEndpoint(
+        repo_id=repo_id, max_length=128, temperature=temperature, token=HUGGINGFACEHUB_API_TOKEN), 
+        chain_type="map_reduce", retriever=retriever, return_source_documents=True)
+        result = qa({"query": query})
+        st.write(result['result'])
 
 if addSelectBox == "Gemini Pro":
-    #GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")   
+    GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")   
     st.header("Generative Q&A with LangChain")
     source_doc = st.file_uploader("Upload source document", type="pdf", label_visibility="visible")
     query = st.text_input("Enter your query")
@@ -113,9 +78,9 @@ if addSelectBox == "Gemini Pro":
     if st.button("Submit"):
         texts = loadFile(source_doc)      
         # Generate embeddings for the pages, insert into Pinecone vector database, and expose the index in a retriever interface
-        embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key = 'AIzaSyDkEntqJsGZk4LcucJwt_Y09Pc0OmzO1wA')
+        embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key = GOOGLE_API_KEY)
         st.write('Hey')
-        pc = Pinecone(api_key = 'e1c3c436-e2c9-4201-990e-9b7962700209') #initialize pinecone
+        pc = Pinecone(api_key = pinecone_api_key) #initialize pinecone
         st.write('initialize pinecone')
         db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name)
         retriever = db.as_retriever()
@@ -123,34 +88,34 @@ if addSelectBox == "Gemini Pro":
         # create a chain to answer questions 
         qa = RetrievalQA.from_chain_type(
         llm= GoogleGenerativeAI(
-        model="gemini-pro", google_api_key="AIzaSyDkEntqJsGZk4LcucJwt_Y09Pc0OmzO1wA", temperature=temperature, convert_system_message_to_human=True), 
+        model="gemini-pro", google_api_key=GOOGLE_API_KEY, temperature=temperature, convert_system_message_to_human=True), 
         chain_type="map_reduce", retriever=retriever, return_source_documents=True)
         result = qa({"query": query})
         st.write(result['result'])
 
-# if addSelectBox == "OpenAI":
-#
-#     OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
-#     st.header("Generative Q&A with LangChain")
-#     query = st.text_input("Enter your query.")
-#     with st.sidebar:
-#         source_doc = st.file_uploader("Upload source document", type="pdf", label_visibility="collapsed")
-#         temperature = st.number_input("Define value of temperature which controls the randomness of model output:",
-#                                   min_value=0.0, max_value=2.0, step= 0.1)
-#     if st.button("Submit"):
-#         texts = loadFile(source_doc)      
-#         # Generate embeddings for the pages, insert into Pinecone vector database, and expose the index in a retriever interface
-#         embeddings = OpenAIEmbeddings(model="text-embedding-3-large", openai_api_key = OPENAI_API_KEY)
-#         Pinecone(api_key=pinecone_api_key)  #initialize pinecone
-#         db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name)
-#         retriever = db.as_retriever()
+if addSelectBox == "OpenAI":
+
+    OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+    st.header("Generative Q&A with LangChain")
+    query = st.text_input("Enter your query.")
+    with st.sidebar:
+        source_doc = st.file_uploader("Upload source document", type="pdf", label_visibility="collapsed")
+        temperature = st.number_input("Define value of temperature which controls the randomness of model output:",
+                                  min_value=0.0, max_value=2.0, step= 0.1)
+    if st.button("Submit"):
+        texts = loadFile(source_doc)      
+        # Generate embeddings for the pages, insert into Pinecone vector database, and expose the index in a retriever interface
+        embeddings = OpenAIEmbeddings(model="text-embedding-3-large", openai_api_key = OPENAI_API_KEY)
+        Pinecone(api_key=pinecone_api_key)  #initialize pinecone
+        db = PineconeVectorStore.from_documents(texts, embeddings, index_name = index_name)
+        retriever = db.as_retriever()
         
-#     # create a chain to answer questions 
-#         qa = RetrievalQA.from_chain_type(
-#         llm= OpenAI(
-#         model="gpt-3.5-turbo-instruct", openai_api_key=OPENAI_API_KEY, temperature=temperature, convert_system_message_to_human=True), 
-#         chain_type="map_reduce", retriever=retriever, return_source_documents=True)
-#         result = qa({"query": query})
-#         st.write(result['result'])
+    # create a chain to answer questions 
+        qa = RetrievalQA.from_chain_type(
+        llm= OpenAI(
+        model="gpt-3.5-turbo-instruct", openai_api_key=OPENAI_API_KEY, temperature=temperature, convert_system_message_to_human=True), 
+        chain_type="map_reduce", retriever=retriever, return_source_documents=True)
+        result = qa({"query": query})
+        st.write(result['result'])
     
 
