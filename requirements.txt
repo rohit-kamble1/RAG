@@ -1,12 +1,11 @@
-streamlit
+streamlit == 1.38.0
 google-generativeai
-python-dotenv
-langchain==0.1.15
-PyPDF2
+python-dotenv == 1.1.0
+langchain
+PyPDF2 == 3.0.1
 langchain-google-genai
-pinecone-client
+pinecone-client == 6.0.0
 langchain-pinecone
-pypdf
-boto3
-#huggingface_hub
-#sentence-transformers
+langchain-openai == 0.3.11
+langchain-community == 0.3.20
+
