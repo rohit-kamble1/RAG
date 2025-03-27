@@ -1,7 +1,6 @@
+# Generative Q&A with LangChain
 ![ss1](https://github.com/user-attachments/assets/d03304d0-182e-4e83-981f-d6d023e6d73b)
 ![image](https://github.com/user-attachments/assets/36aac54d-94dd-4013-9e26-cc42096853fb)
-
-# Generative Q&A with LangChain
 
 This is a Streamlit web application that enables users to upload PDF documents and interact with a Generative AI model (Mistral AI, Gemini Pro, or OpenAI) for Q&A.
 
