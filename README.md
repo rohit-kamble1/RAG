@@ -12,7 +12,7 @@ This is a Streamlit web application that enables users to upload PDF documents a
 
 1. Clone the repository:
    ```sh
-   git clone <your-repo-url>
+   git clone https://github.com/rohit-kamble1/RAG
    cd <your-repo-directory>
 
 2. Install Dependencies
